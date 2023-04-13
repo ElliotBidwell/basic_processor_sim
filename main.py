@@ -131,50 +131,132 @@ class QuadReserve:
 
     def __init__(self):
         self.quad_tablelist = [
-
             # For all except branches, op3 is the destination register
             # For immediate instructions, op1 is the immediate
             # For single operand instructions, only op1 is used
             # For nops, the syntax doesn't allow anything but ";" to follow the "nop", so no operands used
-            ["halt",    "00000000"], # 0    all operands ignored
-            ["add",     "00000001"], # 1
-            ["addi",    "00000010"], # 2
-            ["sub",     "00000011"], # 3
-            ["subi",    "00000100"], # 4
-            ["mult",    "00000101"], # 5
-            ["multi",   "00000110"], # 6
-            ["div",     "00000111"], # 7
-            ["divi",    "00001000"], # 8
-            ["and",     "00001001"], # 9
-            ["andi",    "00001010"], # 10
-            ["or",      "00001011"], # 11
-            ["ori",     "00001100"], # 12
-            ["not",     "00001101"], # 13   single operand
-            ["noti",    "00001110"], # 14
-            ["xor",     "00001111"], # 15
-            ["xori",    "00010000"], # 16
-            ["sll",     "00010001"], # 17   single operand
-            ["slli",    "00010010"], # 18   single operand
-            ["srl",     "00010011"], # 19   single operand
-            ["srli",    "00010100"], # 20   single operand
-            ["mov",     "00010101"], # 21   single operand
-            ["movi",    "00010110"], # 22   single operand
+
+            # ***LITTLE ENDIAN***
+            #["halt",    "00000000"], # 0    all operands ignored
+            #["add",     "10000000"], # 1
+            #["addi",    "01000000"], # 2
+            #["sub",     "11000000"], # 3
+            #["subi",    "00100000"], # 4
+            #["mult",    "10100000"], # 5
+            #["multi",   "01100000"], # 6
+            #["div",     "11100000"], # 7
+            #["divi",    "00010000"], # 8
+            #["and",     "10010000"], # 9
+            #["andi",    "01010000"], # 10
+            #["or",      "11010000"], # 11
+            #["ori",     "00110000"], # 12
+            #["not",     "10110000"], # 13   single operand
+            #"noti",    "01110000"], # 14
+            #["xor",     "11110000"], # 15
+            #["xori",    "00001000"], # 16
+            #["sll",     "10001000"], # 17   single operand
+            #["slli",    "01001000"], # 18   single operand
+            #["srl",     "11001000"], # 19   single operand
+            #["srli",    "00101000"], # 20   single operand
+            #["mov",     "10101000"], # 21   single operand
+            #["movi",    "01101000"], # 22   single operand
 
             # For branches, op3 is the target
-            ["jump",    "00010111"], # 23  branch unconditional, value of op3 is the target
-            ["bz",      "00011000"], # 24  branch zero, if op1 = 0, two used operands: op1, op3
-            ["bpos",    "00011001"], # 25  branch positive, if op1 > 0,
-            ["bneg",    "00011010"], # 26  branch negative, if op1 < 0
-            ["bnz",     "00011011"], # 27  branch not zero, if op1 != 0
-            ["bnp",     "00011100"], # 28  branch not positive, if op1 <= 0
-            ["bnn",     "00011101"], # 29  branch not negative, if op1 >= 0
-            ["jmpr",    "00011110"], # 30  branch unconditional (register), value op3 is index of a register
+            #["jump",    "11101000"], # 23  branch unconditional, value of op3 is the target
+            #["bz",      "00011000"], # 24  branch zero, if op1 = 0, two used operands: op1, op3
+            #["bpos",    "10011000"], # 25  branch positive, if op1 > 0,
+            #["bneg",    "01011000"], # 26  branch negative, if op1 < 0
+            #["bnz",     "11011000"], # 27  branch not zero, if op1 != 0
+            #["bnp",     "00111000"], # 28  branch not positive, if op1 <= 0
+            #["bnn",     "10111000"], # 29  branch not negative, if op1 >= 0
+            #["jmpr",    "01111000"], # 30  branch unconditional (register), value op3 is index of a register
             # TODO For print instruction, figure out how to determine what datatype op1 should be printed as.
             #   Not sure if current implementation will work well
-            ["prnti",    "00011111"], # 31  prints contents of op1 to console as signed int
-            ["prntu",    "00100000"], # 32  prints contents of op1 to console as unsigned int
-            ["prntc",    "00100001"], # 33  prints contents of op1 to console as char
-            ["nop",      "00100010"], # 34  NO OP, processor does nothing, no operands
+            #["prnti",   "11111000"], # 31  prints contents of op1 to console as signed int
+            #["prntu",   "00000100"], # 32  prints contents of op1 to console as unsigned int
+            #["prntc",   "10000100"], # 33  prints contents of op1 to console as char
+            #["nop",     "01000100"], # 34  NO OP, processor does nothing, no operands
+
+            # ***BIG ENDIAN***
+            #["halt", "00000000"],  # 0    all operands ignored
+            #["add", "00000001"],  # 1
+            #["addi", "00000010"],  # 2
+            #["sub", "00000011"],  # 3
+            #["subi", "00000100"],  # 4
+            #["mult", "00000101"],  # 5
+            #["multi", "00000110"],  # 6
+            #["div", "00000111"],  # 7
+            #["divi", "00001000"],  # 8
+            #["and", "00001001"],  # 9
+            #["andi", "00001010"],  # 10
+            #["or", "00001011"],  # 11
+            #["ori", "00001100"],  # 12
+            #["not", "00001101"],  # 13   single operand
+            #["noti", "00001110"],  # 14
+            #["xor", "00001111"],  # 15
+            #["xori", "00010000"],  # 16
+            #["sll", "00010001"],  # 17   single operand
+            #["slli", "00010010"],  # 18   single operand
+            #["srl", "00010011"],  # 19   single operand
+            #["srli", "00010100"],  # 20   single operand
+            #["mov", "00010101"],  # 21   single operand
+            #["movi", "00010110"],  # 22   single operand
+
+            # For branches, op3 is the target
+            #["jump", "00010111"],  # 23  branch unconditional, value of op3 is the target
+            #["bz", "00011000"],  # 24  branch zero, if op1 = 0, two used operands: op1, op3
+            #["bpos", "00011001"],  # 25  branch positive, if op1 > 0,
+            #["bneg", "00011010"],  # 26  branch negative, if op1 < 0
+            #["bnz", "00011011"],  # 27  branch not zero, if op1 != 0
+            #["bnp", "00011100"],  # 28  branch not positive, if op1 <= 0
+            #["bnn", "00011101"],  # 29  branch not negative, if op1 >= 0
+            #["jmpr", "00011110"],  # 30  branch unconditional (register), value op3 is index of a register
+            # TODO For print instruction, figure out how to determine what datatype op1 should be printed as.
+            #   Not sure if current implementation will work well
+            #["prnti", "00011111"],  # 31  prints contents of op1 to console as signed int
+            #["prntu", "00100000"],  # 32  prints contents of op1 to console as unsigned int
+            #["prntc", "00100001"],  # 33  prints contents of op1 to console as char
+            #["nop", "00100010"],  # 34  NO OP, processor does nothing, no operands
+
+            ["halt", 0b00000000],  # 0    all operands ignored
+            ["add",  0b00000001],  # 1
+            ["addi", "00000010"],  # 2
+            ["sub", "00000011"],  # 3
+            ["subi", "00000100"],  # 4
+            ["mult", "00000101"],  # 5
+            ["multi", "00000110"],  # 6
+            ["div", "00000111"],  # 7
+            ["divi", "00001000"],  # 8
+            ["and", "00001001"],  # 9
+            ["andi", "00001010"],  # 10
+            ["or", "00001011"],  # 11
+            ["ori", "00001100"],  # 12
+            ["not", "00001101"],  # 13   single operand
+            ["noti", "00001110"],  # 14
+            ["xor", "00001111"],  # 15
+            ["xori", "00010000"],  # 16
+            ["sll", "00010001"],  # 17   single operand
+            ["slli", "00010010"],  # 18   single operand
+            ["srl", "00010011"],  # 19   single operand
+            ["srli", "00010100"],  # 20   single operand
+            ["mov",   "00010101"],  # 21   single operand
+            ["movi", 0b00010110],  # 22   single operand
+
+            # For branches, op3 is the target
+            ["jump", "00010111"],  # 23  branch unconditional, value of op3 is the target
+            ["bz", "00011000"],  # 24  branch zero, if op1 = 0, two used operands: op1, op3
+            ["bpos", "00011001"],  # 25  branch positive, if op1 > 0,
+            ["bneg", "00011010"],  # 26  branch negative, if op1 < 0
+            ["bnz", "00011011"],  # 27  branch not zero, if op1 != 0
+            ["bnp", 0b00011100],  # 28  branch not positive, if op1 <= 0
+            ["bnn", "00011101"],  # 29  branch not negative, if op1 >= 0
+            ["jmpr", "00011110"],  # 30  branch unconditional (register), value op3 is index of a register
+            # TODO For print instruction, figure out how to determine what datatype op1 should be printed as.
+            #   Not sure if current implementation will work well
+            ["prnti", "00011111"],  # 31  prints contents of op1 to console as signed int
+            ["prntu", "00100000"],  # 32  prints contents of op1 to console as unsigned int
+            ["prntc", 0b00100001],  # 33  prints contents of op1 to console as char
+            ["nop", 0b00100010],  # 34  NO OP, processor does nothing, no operands
         ]
 
     def get_index(self, mnem_or_code):
@@ -196,6 +278,10 @@ class QuadReserve:
                     opcode = quad[1]
 
         return opcode
+
+    def get_halt(self):
+        print(f'halt {int(self.quad_tablelist[0][1])}')
+        return self.quad_tablelist[0][1]
 
     def get_mnem(self, code_or_index):
         mnemonic = "undef"
@@ -231,6 +317,68 @@ class LexicalAnalyzer:
 #         self.
 
 
+class RegFile:
+    registerList = []
+    reg_file_size = 0
+
+    class Register:
+        reg_num = 0
+        reg_name = ""
+        reg_bin_contents = "0000" + "0000"\
+                         + "0000" + "0000"\
+                         + "0000" + "0000"\
+                         + "0000" + "0000"
+        reg_hex_contents = ""
+        reg_char_contents = ""
+        reg_unsign_contents = 0
+        reg_sign_contents = 0
+        reg_float_contents = 0.0
+
+        def __int__(self, register_number, register_name):
+            self.reg_num = register_number
+            self.reg_name = register_name
+
+        def set_contents(self, bin_str):
+            self.reg_bin_contents = bin_str
+
+            neg_signed_flag = False
+
+
+
+            n = 0
+            for bin_dig in self.reg_bin_contents:
+                if bin_dig == '1':
+                    if n == 31:
+                        self.reg_sign_contents += (2 ** n) * -1
+                    else:
+                        self.reg_sign_contents += (2 ** n)
+                    self.reg_unsign_contents += 2 ** n
+
+                if n == 7:
+                    self.reg_char_contents = chr(self.reg_unsign_contents)
+
+                n += 1
+
+            self.reg_hex_contents = hex(self.reg_unsign_contents)
+
+    def __init__(self, file_sz, echo):
+        self.reg_file_size = file_sz
+
+        for i in self.reg_file_size:
+            self.registerList.append(-1)
+
+    def __repr__(self):
+        return "Test()"
+
+    def __str__(self):
+        return "Register File:\n"\
+             + "Size:" + self.reg_file_size\
+             + "\n" + self.registerList
+
+    def add_reg(self, reg_name):
+        self.registerList.append(reg_name) # TODO FINISH THIS
+
+
 def test_quad_reserve(quad_reserve):
     line_spacing = 15
 
@@ -254,7 +402,13 @@ def test_quad_reserve(quad_reserve):
 
 
 new_reserve = QuadReserve()
-test_quad_reserve(new_reserve)
+print(new_reserve.get_opcode(0))
+print(new_reserve.get_opcode(1))
+print(new_reserve.get_opcode(22))
+print(new_reserve.get_opcode(28))
+print(new_reserve.get_opcode(33))
+print(new_reserve.get_opcode(34))
+#test_quad_reserve(new_reserve)
 
 # print(quad_reserve.get_opCode)
 
